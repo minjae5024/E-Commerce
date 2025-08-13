@@ -1,4 +1,4 @@
-package minjae5024.contestProject;
+package minjae5024.ECommerceProject;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
