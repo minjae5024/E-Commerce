@@ -1,17 +1,17 @@
 package minjae5024.ECommerceProject.DTO;
 
-import minjae5024.ECommerceProject.entity.Product;
+import lombok.Builder;
+import lombok.Data;
 
-public record ProductResponse(
-        Long id, String name, String description,
-        String category, String brand, Long price,
-        Integer stock, String status
-) {
-    public static ProductResponse from(Product p) {
-        return new ProductResponse(
-                p.getId(), p.getName(), p.getDescription(),
-                p.getCategory(), p.getBrand(), p.getPrice(),
-                p.getStock(), p.getStatus()
-        );
-    }
+@Data
+@Builder
+public class ProductResponse {
+    private Long id;
+    private String name;
+    private String description;
+    private String category;
+    private String brand;
+    private Long price;
+    private Integer stock;
+    private String status;
 }

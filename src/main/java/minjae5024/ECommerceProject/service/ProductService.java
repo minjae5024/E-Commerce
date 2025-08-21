@@ -4,46 +4,62 @@ import lombok.RequiredArgsConstructor;
 import minjae5024.ECommerceProject.DTO.PageResponse;
 import minjae5024.ECommerceProject.DTO.ProductResponse;
 import minjae5024.ECommerceProject.entity.Product;
-import minjae5024.ECommerceProject.entity.ProductStatus;
 import minjae5024.ECommerceProject.repository.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class ProductService {
-
     private final ProductRepository productRepository;
 
-    public PageResponse<ProductResponse> list(String q, String category, Pageable pageable) {
-        Page<Product> page;
-        String active = ProductStatus.ACTIVE.name();
-
-        if (category != null && !category.isBlank()) {
-            page = productRepository.findByStatusAndCategory(active, category, pageable);
-        } else if (q != null && !q.isBlank()) {
-            page = productRepository
-                    .findByStatusAndNameContainingIgnoreCaseOrStatusAndCategoryContainingIgnoreCase(
-                            active, q, active, q, pageable);
-        } else {
-            page = productRepository.findAll(
-                    PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort())
-            );
-        }
-
-        var content = page.getContent().stream().map(ProductResponse::from).collect(Collectors.toList());
-        return new PageResponse<>(content, page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages());
+    // 단건 조회
+    public ProductResponse getProduct(Long id) {
+        return productRepository.findById(id)
+                .map(product -> ProductResponse.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .description(product.getDescription())
+                        .category(product.getCategory())
+                        .brand(product.getBrand())
+                        .price(product.getPrice())
+                        .stock(product.getStock())
+                        .status(product.getStatus())
+                        .build())
+                .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
     }
 
-    public ProductResponse get(Long id) {
-        var p = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다: id=" + id));
-        return ProductResponse.from(p);
+    // 전체 조회 (페이지네이션)
+    public PageResponse<ProductResponse> getProducts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        Page<Product> products = productRepository.findAll(pageable);
+
+        List<ProductResponse> productResponses = products.getContent().stream()
+                .map(product -> ProductResponse.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .description(product.getDescription())
+                        .category(product.getCategory())
+                        .brand(product.getBrand())
+                        .price(product.getPrice())
+                        .stock(product.getStock())
+                        .status(product.getStatus())
+                        .build())
+                .toList();
+
+        return PageResponse.<ProductResponse>builder()
+                .content(productResponses)
+                .pageNumber(products.getNumber())
+                .pageSize(products.getSize())
+                .totalElements(products.getTotalElements())
+                .totalPages(products.getTotalPages())
+                .last(products.isLast())
+                .build();
     }
 }
