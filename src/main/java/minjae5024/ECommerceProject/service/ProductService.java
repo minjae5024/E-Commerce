@@ -1,8 +1,8 @@
 package minjae5024.ECommerceProject.service;
 
 import lombok.RequiredArgsConstructor;
-import minjae5024.ECommerceProject.DTO.PageResponse;
-import minjae5024.ECommerceProject.DTO.ProductResponse;
+import minjae5024.ECommerceProject.dto.PageResponse;
+import minjae5024.ECommerceProject.dto.ProductResponse;
 import minjae5024.ECommerceProject.entity.Product;
 import minjae5024.ECommerceProject.entity.ProductStatus;
 import minjae5024.ECommerceProject.repository.ProductRepository;

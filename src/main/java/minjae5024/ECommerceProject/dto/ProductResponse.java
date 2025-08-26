@@ -1,4 +1,4 @@
-package minjae5024.ECommerceProject.DTO;
+package minjae5024.ECommerceProject.dto;
 
 import minjae5024.ECommerceProject.entity.Product;
 
