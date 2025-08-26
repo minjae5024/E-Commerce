@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스마트 이커머스 홈</title>
+    <style>
+        /* 기본 레이아웃 */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+header {
+  background-color: #2c3e50;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header .logo a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+/* Hero 영역 */
+.hero {
+  background-color: #ecf0f1;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* 상품 목록 */
+.product-list {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1rem;
+  flex-wrap: wrap;
+}
+
+.product {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  text-align: center;
+}
+
+.product img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.product h4 {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.product p {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #e67e22;
+}
+
+/* 푸터 */
+footer {
+  background-color: #2c3e50;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+}
+
+    </style>
+</head>
+<body>
+<header>
+    <div class="logo">
+        <h1><a href="/">Smart E-Commerce</a></h1>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="/products">상품목록</a></li>
+            <li><a href="/cart">장바구니</a></li>
+            <li><a href="/orders">주문내역</a></li>
+            <li><a href="/admin">관리자</a></li>
+            <li><a href="/login">로그인</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section class="hero">
+        <h2>최신 상품을 만나보세요</h2>
+        <p>인기 있는 상품과 추천 상품을 한눈에</p>
+    </section>
+
+    <section class="featured-products">
+        <h3>인기 상품</h3>
+        <div class="product-list">
+            <div class="product">
+                <img src="/static/images/sample1.jpg" alt="상품1">
+                <h4>상품 이름 1</h4>
+                <p>₩10,000</p>
+            </div>
+            <div class="product">
+                <img src="/static/images/sample2.jpg" alt="상품2">
+                <h4>상품 이름 2</h4>
+                <p>₩20,000</p>
+            </div>
+            <div class="product">
+                <img src="/static/images/sample3.jpg" alt="상품3">
+                <h4>상품 이름 3</h4>
+                <p>₩30,000</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="recommend-products">
+        <h3>추천 상품</h3>
+        <div class="product-list">
+            <div class="product">
+                <img src="/static/images/sample4.jpg" alt="상품4">
+                <h4>상품 이름 4</h4>
+                <p>₩40,000</p>
+            </div>
+            <div class="product">
+                <img src="/static/images/sample5.jpg" alt="상품5">
+                <h4>상품 이름 5</h4>
+                <p>₩50,000</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2025 Smart E-Commerce. All rights reserved.</p>
+</footer>
+</body>
+</html>
