@@ -40,4 +40,9 @@ public class UserController {
 
         return "redirect:/users/login"; // 회원가입 성공 시 로그인 페이지로 리다이렉트
     }
+
+    @GetMapping("/login")
+    public String showLoginForm() {
+        return "user/login-form";
+    }
 }
