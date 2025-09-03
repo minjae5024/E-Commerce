@@ -1,48 +1,80 @@
 package com.ecommerce.controller;
 
+import com.ecommerce.config.jwt.JwtTokenProvider;
+import com.ecommerce.dto.JwtResponseDto;
+import com.ecommerce.dto.UserLoginRequestDto;
 import com.ecommerce.dto.UserSignupRequestDto;
 import com.ecommerce.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-@RequestMapping("/users")
+import java.util.Map;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    @GetMapping("/signup")
-    public String showSignupForm(Model model) {
-        model.addAttribute("userSignupRequestDto", new UserSignupRequestDto());
-        return "user/signup-form";
-    }
-
-    @PostMapping("/signup")
-    public String signup(@Valid @ModelAttribute UserSignupRequestDto userSignupRequestDto, BindingResult bindingResult) {
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody UserLoginRequestDto loginRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "user/signup-form"; // 유효성 검사 실패 시, 폼으로 다시 이동
+            Map<String, String> errors = bindingResult.getFieldErrors().stream()
+                    .collect(Collectors.toMap(
+                            fieldError -> fieldError.getField(),
+                            fieldError -> fieldError.getDefaultMessage() != null ? fieldError.getDefaultMessage() : "Invalid value"
+                    ));
+            return ResponseEntity.badRequest().body(errors);
         }
 
         try {
-            userService.signup(userSignupRequestDto);
-        } catch (IllegalStateException e) {
-            bindingResult.rejectValue("email", "duplicate", e.getMessage());
-            return "user/signup-form";
-        }
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
+            );
 
-        return "redirect:/users/login"; // 회원가입 성공 시 로그인 페이지로 리다이렉트
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            String jwt = jwtTokenProvider.generateToken(authentication);
+
+            return ResponseEntity.ok(new JwtResponseDto(jwt));
+
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials"));
+        }
     }
 
-    @GetMapping("/login")
-    public String showLoginForm() {
-        return "user/login-form";
+    @PostMapping("/signup")
+    public ResponseEntity<?> signup(@Valid @RequestBody UserSignupRequestDto userSignupRequestDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = bindingResult.getFieldErrors().stream()
+                    .collect(Collectors.toMap(
+                            fieldError -> fieldError.getField(),
+                            fieldError -> fieldError.getDefaultMessage() != null ? fieldError.getDefaultMessage() : "Invalid value"
+                    ));
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        try {
+            Long userId = userService.signup(userSignupRequestDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("userId", userId, "message", "User registered successfully."));
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", e.getMessage()));
+        }
     }
 }
