@@ -63,31 +63,31 @@ class ProductControllerTest {
 
     @BeforeEach
     void setUp() {
-        // Clear repositories and set up users
         userRepository.deleteAll();
         productRepository.deleteAll();
 
         User admin = User.builder()
-                .email("admin@test.com")
-                .password(passwordEncoder.encode("password"))
-                .name("Admin")
+                .email("testAdmin@test.com")
+                .password(passwordEncoder.encode("testPassword"))
+                .name("testAdmin")
                 .role(Role.ADMIN)
+                .points(0)
                 .build();
         userRepository.save(admin);
 
         User user = User.builder()
-                .email("user@test.com")
-                .password(passwordEncoder.encode("password"))
-                .name("User")
+                .email("testUser@test.com")
+                .password(passwordEncoder.encode("testPassword"))
+                .name("testUser")
                 .role(Role.USER)
+                .points(1000000)
                 .build();
         userRepository.save(user);
 
-        // Generate tokens
-        Authentication adminAuth = new UsernamePasswordAuthenticationToken("admin@test.com", null, Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+        Authentication adminAuth = new UsernamePasswordAuthenticationToken("testAdmin@test.com", null, Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")));
         adminToken = jwtTokenProvider.generateToken(adminAuth);
 
-        Authentication userAuth = new UsernamePasswordAuthenticationToken("user@test.com", null, Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+        Authentication userAuth = new UsernamePasswordAuthenticationToken("testUser@test.com", null, Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
         userToken = jwtTokenProvider.generateToken(userAuth);
     }
 
@@ -96,10 +96,10 @@ class ProductControllerTest {
     void createProduct_byAdmin_success() throws Exception {
         // given
         ProductCreateRequestDto requestDto = new ProductCreateRequestDto();
-        requestDto.setName("Test Product");
+        requestDto.setName("testProduct");
         requestDto.setPrice(10000);
         requestDto.setStockQuantity(100);
-        requestDto.setDescription("This is a test product.");
+        requestDto.setDescription("testDescription");
 
         String requestBody = objectMapper.writeValueAsString(requestDto);
 
@@ -117,19 +117,19 @@ class ProductControllerTest {
     void createProduct_byUser_fail() throws Exception {
         // given
         ProductCreateRequestDto requestDto = new ProductCreateRequestDto();
-        requestDto.setName("Test Product by User");
+        requestDto.setName("testProduct");
         requestDto.setPrice(10000);
         requestDto.setStockQuantity(100);
-        requestDto.setDescription("This is a test product by user.");
+        requestDto.setDescription("testDescription");
 
         String requestBody = objectMapper.writeValueAsString(requestDto);
 
         // when & then
         mockMvc.perform(post("/api/products")
-                        .header("Authorization", "Bearer " + userToken) // Use user token
+                        .header("Authorization", "Bearer " + userToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isForbidden()) // Expect 403 Forbidden
+                .andExpect(status().isForbidden())
                 .andDo(print());
     }
 
@@ -138,10 +138,10 @@ class ProductControllerTest {
     void getProductById_success() throws Exception {
         // given
         Product product = productRepository.save(Product.builder()
-                .name("Test Product")
+                .name("testProduct")
                 .price(10000)
                 .stockQuantity(100)
-                .description("description")
+                .description("testDescription")
                 .build());
 
         // when
@@ -150,7 +150,7 @@ class ProductControllerTest {
 
         // then
         result.andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Test Product"))
+                .andExpect(jsonPath("$.name").value("testProduct"))
                 .andExpect(jsonPath("$.price").value(10000))
                 .andExpect(jsonPath("$.stockQuantity").value(100))
                 .andDo(print());
@@ -174,10 +174,10 @@ class ProductControllerTest {
     void getAllProducts_paged_success() throws Exception {
         // given
         List<Product> products = IntStream.range(1, 21).mapToObj(i -> Product.builder()
-                .name("Product " + i)
+                .name("testProduct " + i)
                 .price(1000 * i)
                 .stockQuantity(100)
-                .description("Description " + i)
+                .description("testDescription " + i)
                 .build()).collect(Collectors.toList());
         productRepository.saveAll(products);
 
@@ -197,17 +197,17 @@ class ProductControllerTest {
     void updateProduct_byAdmin_success() throws Exception {
         // given
         Product product = productRepository.save(Product.builder()
-                .name("Original Name")
+                .name("originalName")
                 .price(10000)
                 .stockQuantity(100)
-                .description("Original Description")
+                .description("originalDescription")
                 .build());
 
         ProductUpdateRequestDto requestDto = new ProductUpdateRequestDto();
-        requestDto.setName("Updated Name");
+        requestDto.setName("updatedName");
         requestDto.setPrice(20000);
         requestDto.setStockQuantity(50);
-        requestDto.setDescription("Updated Description");
+        requestDto.setDescription("updatedDescription");
 
         // when
         mockMvc.perform(put("/api/products/" + product.getId())
@@ -218,7 +218,7 @@ class ProductControllerTest {
 
         // then
         Product updatedProduct = productRepository.findById(product.getId()).orElseThrow();
-        assertThat(updatedProduct.getName()).isEqualTo("Updated Name");
+        assertThat(updatedProduct.getName()).isEqualTo("updatedName");
         assertThat(updatedProduct.getPrice()).isEqualTo(20000);
     }
 
@@ -226,9 +226,9 @@ class ProductControllerTest {
     @DisplayName("일반 사용자 권한으로 상품 수정 실패")
     void updateProduct_byUser_fail() throws Exception {
         // given
-        Product product = productRepository.save(Product.builder().name("Original").price(100).stockQuantity(10).description("desc").build());
+        Product product = productRepository.save(Product.builder().name("originalName").price(100).stockQuantity(10).description("desc").build());
         ProductUpdateRequestDto requestDto = new ProductUpdateRequestDto();
-        requestDto.setName("Updated Name");
+        requestDto.setName("updatedName");
 
         // when & then
         mockMvc.perform(put("/api/products/" + product.getId())
@@ -242,7 +242,7 @@ class ProductControllerTest {
     @DisplayName("관리자 권한으로 상품 삭제 성공")
     void deleteProduct_byAdmin_success() throws Exception {
         // given
-        Product product = productRepository.save(Product.builder().name("To be deleted").price(100).stockQuantity(10).description("desc").build());
+        Product product = productRepository.save(Product.builder().name("toBeDeleted").price(100).stockQuantity(10).description("desc").build());
 
         // when
         mockMvc.perform(delete("/api/products/" + product.getId())
@@ -257,7 +257,7 @@ class ProductControllerTest {
     @DisplayName("일반 사용자 권한으로 상품 삭제 실패")
     void deleteProduct_byUser_fail() throws Exception {
         // given
-        Product product = productRepository.save(Product.builder().name("To be deleted").price(100).stockQuantity(10).description("desc").build());
+        Product product = productRepository.save(Product.builder().name("toBeDeleted").price(100).stockQuantity(10).description("desc").build());
 
         // when & then
         mockMvc.perform(delete("/api/products/" + product.getId())

@@ -32,6 +32,7 @@ public class UserSignupRequestDto {
                 .name(name)
                 .address(address)
                 .role(Role.USER) // 기본 권한은 USER
+                .points(1000000) // 기본 포인트 1,000,000 지급
                 .build();
     }
 }

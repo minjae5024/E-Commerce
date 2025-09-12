@@ -32,12 +32,23 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private Role role;
 
+    @Column(nullable = false)
+    private int points;
+
     @Builder
-    public User(String email, String password, String name, String address, Role role) {
+    public User(String email, String password, String name, String address, Role role, int points) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.address = address;
         this.role = role;
+        this.points = points;
+    }
+
+    public void usePoints(int amount) {
+        if (this.points < amount) {
+            throw new IllegalStateException("Not enough points");
+        }
+        this.points -= amount;
     }
 }

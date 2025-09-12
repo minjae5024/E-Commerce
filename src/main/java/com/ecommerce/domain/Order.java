@@ -47,7 +47,7 @@ public class Order {
         for (OrderItem orderItem : orderItems) {
             order.addOrderItem(orderItem);
         }
-        order.status = OrderStatus.ORDERED;
+        order.status = OrderStatus.PENDING_PAYMENT; // 변경: 결제 대기 상태로 생성
         order.orderDate = LocalDateTime.now();
         order.totalPrice = order.calculateTotalPrice();
         return order;
@@ -59,6 +59,10 @@ public class Order {
         for (OrderItem orderItem : orderItems) {
             orderItem.cancel();
         }
+    }
+
+    public void completePayment() {
+        this.status = OrderStatus.ORDERED;
     }
 
     private int calculateTotalPrice() {

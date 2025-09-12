@@ -1,5 +1,5 @@
 package com.ecommerce.domain;
 
 public enum OrderStatus {
-    ORDERED, CANCELED
+    PENDING_PAYMENT, ORDERED, CANCELED
 }
