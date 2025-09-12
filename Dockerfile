@@ -9,7 +9,7 @@ COPY src /home/gradle/src/src
 RUN chmod +x ./gradlew
 RUN ./gradlew build -x test
 
-FROM openjdk:21-jre-slim
+FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
