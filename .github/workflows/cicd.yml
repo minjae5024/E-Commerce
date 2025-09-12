@@ -6,7 +6,7 @@ on:
 
 env:
   DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-  IMAGE_NAME: ecommerce-backend
+  IMAGE_NAME: ecommerce
 
 jobs:
   build-and-push:
@@ -65,7 +65,7 @@ jobs:
               docker rm ${{ env.IMAGE_NAME }}
             fi
             
-            docker run -d --name ${{ env.IMAGE_NAME }} -p 80:8080 \
+            docker run -d --name ${{ env.IMAGE_NAME }} -p 8081:8080 \
               -e SPRING_PROFILES_ACTIVE=prod \
               -e DB_HOST=${{ secrets.DB_HOST }} \
               -e DB_NAME=${{ secrets.DB_NAME }} \
