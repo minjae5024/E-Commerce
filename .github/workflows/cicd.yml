@@ -10,7 +10,7 @@ env:
 
 jobs:
   build-and-push:
-    name: Build and Push to Docker Hub
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
@@ -45,7 +45,7 @@ jobs:
           docker push $IMAGE_TAG
 
   deploy:
-    name: Deploy to AWS EC2 Instance
+    name: Deploy
     needs: build-and-push
     runs-on: ubuntu-latest
 
