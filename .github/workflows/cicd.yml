@@ -46,27 +46,13 @@ jobs:
           source: "ECommerce-0.0.1-SNAPSHOT.jar"
           target: "/home/${{ secrets.AWS_USERNAME }}/app"
 
-      - name: Restart server
+      - name: Restart server with systemd
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USERNAME }}
           key: ${{ secrets.AWS_SSH_KEY }}
           script: |
-            cd /home/${{ secrets.AWS_USERNAME }}/app
-            
-            # Find and kill the old process. The '|| true' ensures this step never fails.
-            pkill -f "ecommerce.jar" || true
-            sleep 5 # Give a moment for the port to be released
-            
+            cd /home/${{ secrets.AWS_USERNAME }}/ecommerce
             mv -f ECommerce-0.0.1-SNAPSHOT.jar ecommerce.jar
-            
-            nohup env \
-              SPRING_DATASOURCE_URL=jdbc:mysql://${{ secrets.DB_HOST }}:3306/${{ secrets.DB_NAME }}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC \
-              SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USERNAME }} \
-              SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }} \
-              JWT_SECRET=${{ secrets.JWT_SECRET }} \
-              SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.MySQLDialect \
-              java -jar -Dspring.profiles.active=prod --server.port=8081 ecommerce.jar > /dev/null 2>&1 &
-
-            exit 0 # Explicitly exit with a success code to prevent action failure
+            sudo systemctl restart ecommerce.service
