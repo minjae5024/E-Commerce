@@ -29,18 +29,16 @@ public class OrderItem {
     private int orderPrice; // Snapshot of price at time of order
     private int quantity;
 
-    //== 생성 메소드 ==//
     public static OrderItem createOrderItem(Product product, int quantity) {
         OrderItem orderItem = new OrderItem();
         orderItem.product = product;
         orderItem.orderPrice = product.getPrice();
         orderItem.quantity = quantity;
 
-        product.removeStock(quantity); // 재고 감소 로직 추가
+        product.removeStock(quantity);
         return orderItem;
     }
 
-    //== 비즈니스 로직 ==//
     public int getTotalPrice() {
         return getOrderPrice() * getQuantity();
     }

@@ -19,14 +19,12 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
 
     public Long processInternalPayment(String userEmail, Long orderId) {
-        // 1. User and Order lookup
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new EntityNotFoundException("User not found: " + userEmail));
 
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new EntityNotFoundException("Order not found: " + orderId));
 
-        // 2. Validate ownership and order status
         if (!order.getUser().getId().equals(user.getId())) {
             throw new SecurityException("User does not have permission to pay for this order.");
         }
@@ -36,13 +34,10 @@ public class PaymentService {
 
         int totalPrice = order.getTotalPrice();
 
-        // 3. Deduct points from user
         user.usePoints(totalPrice);
 
-        // 4. Update order status
         order.completePayment();
 
-        // 5. Create and save payment record
         Payment payment = Payment.builder()
                 .order(order)
                 .paymentMethod("INTERNAL_POINTS")

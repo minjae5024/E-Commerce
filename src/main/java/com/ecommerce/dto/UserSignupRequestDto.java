@@ -28,11 +28,11 @@ public class UserSignupRequestDto {
     public User toEntity(String encodedPassword) {
         return User.builder()
                 .email(email)
-                .password(encodedPassword) // 암호화된 비밀번호 사용
+                .password(encodedPassword)
                 .name(name)
                 .address(address)
-                .role(Role.USER) // 기본 권한은 USER
-                .points(1000000) // 기본 포인트 1,000,000 지급
+                .role(Role.USER)
+                .points(1000000)
                 .build();
     }
 }

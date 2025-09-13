@@ -26,12 +26,10 @@ public class Cart extends BaseTimeEntity {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CartItem> cartItems = new ArrayList<>();
 
-    //== Constructor ==//
     private Cart(User user) {
         this.user = user;
     }
 
-    //== Creation Method ==//
     public static Cart createCart(User user) {
         return new Cart(user);
     }

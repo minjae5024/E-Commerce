@@ -34,26 +34,23 @@ public class Order {
 
     private int totalPrice;
 
-    //== 연관관계 편의 메소드 ==//
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
         orderItem.setOrder(this);
     }
 
-    //== 생성 메소드 ==//
     public static Order createOrder(User user, List<OrderItem> orderItems) {
         Order order = new Order();
         order.user = user;
         for (OrderItem orderItem : orderItems) {
             order.addOrderItem(orderItem);
         }
-        order.status = OrderStatus.PENDING_PAYMENT; // 변경: 결제 대기 상태로 생성
+        order.status = OrderStatus.PENDING_PAYMENT;
         order.orderDate = LocalDateTime.now();
         order.totalPrice = order.calculateTotalPrice();
         return order;
     }
 
-    //== 비즈니스 로직 ==//
     public void cancel() {
         this.status = OrderStatus.CANCELED;
         for (OrderItem orderItem : orderItems) {

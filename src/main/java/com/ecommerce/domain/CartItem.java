@@ -26,19 +26,16 @@ public class CartItem {
 
     private int quantity;
 
-    //== Constructor ==//
     private CartItem(Cart cart, Product product, int quantity) {
         this.cart = cart;
         this.product = product;
         this.quantity = quantity;
     }
 
-    //== Creation Method ==//
     public static CartItem createCartItem(Cart cart, Product product, int quantity) {
         return new CartItem(cart, product, quantity);
     }
 
-    //== Business Logic ==//
     public void addQuantity(int quantity) {
         this.quantity += quantity;
     }
