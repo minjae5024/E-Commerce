@@ -38,24 +38,24 @@
 ```mermaid
 graph TD
 
-    subgraph Development_&_CI/CD
-        A[👨‍💻 Developer] -->|1. Git Push| B(GitHub Repository)
-        B -->|2. Trigger| C{GitHub Actions}
+    subgraph Development_and_CI_CD
+        A[👨‍💻 개발자] -->|1. Git Push| B(GitHub 저장소)
+        B -->|2. 트리거| C{GitHub Actions}
 
-        subgraph Pipeline
-            C -->|3. Build| D[✅ .jar 생성]
-            D -->|4. Deploy| E[🚀 EC2로 전송 및 재시작]
+        subgraph 파이프라인
+            C -->|3. 빌드| D[✅ .jar 생성]
+            D -->|4. 배포| E[🚀 EC2로 전송 및 재시작]
         end
     end
 
     subgraph AWS_Cloud_Infrastructure
-        F[🌐 EC2 Instance<br>(ecommerce.jar)] -->|DB Connection| G[💾 RDS (MySQL)]
+        F[🌐 EC2 Instance (ecommerce.jar)] -->|DB 연결| G[💾 RDS (MySQL)]
     end
 
     E -->|SSH| F
 
-    subgraph User_Service_Flow
-        I[👤 User] -->|API Request| F
+    subgraph 사용자_서비스_흐름
+        I[👤 사용자] -->|API 요청| F
     end
 
     style F fill:#FF9900,stroke:#333,stroke-width:2px
