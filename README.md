@@ -28,37 +28,43 @@
 - **Build Tool**: `Gradle`
 - **Infrastructure & DevOps**: `GitHub Actions`, `AWS EC2`, `AWS RDS`
 
-## 4. 아키텍처 다이어그램
+## 4. 전체 시스템 아키텍처
 
 <details>
 <summary><b>클릭하여 아키텍처 확인하기</b></summary>
 
-### **서비스 아키텍처**
+개발부터 배포, 서비스 운영까지의 전체 흐름을 나타내는 아키텍처 다이어그램입니다.
 
 ```mermaid
 graph TD
-    A[👤 User] --> B{Browser / API Client};
-    B --> C[🌐 Spring Boot App on EC2];
-    
-    subgraph "AWS Cloud"
-        C --> D[💾 MySQL DB on RDS];
-    end
-```
-
-
-### **CI/CD 파이프라인**
-
-```mermaid
-graph LR
-    A[👨‍💻 Developer] -- Push --> B(GitHub Repository)
-    B -- Trigger --> C{GitHub Actions}
-    
-    subgraph "CI/CD Pipeline"
-        C -- Run --> D[✅ Build with Gradle]
-        D -- Success --> E[🚀 Deploy to EC2]
+    subgraph "Development & CI/CD"
+        A[👨‍💻 Developer] -- 1. Git Push --> B(GitHub Repository);
+        B -- 2. Trigger --> C{GitHub Actions};
+        subgraph "Pipeline"
+            C -- 3. Build --> D[✅ .jar 생성];
+            D -- 4. Deploy --> E[🚀 EC2로 전송 및 재시작];
+        end
     end
 
-    E -- SSH --> F[🌐 AWS EC2]
+    subgraph "AWS Cloud Infrastructure"
+        F[🌐 EC2 Instance]
+        G[💾 RDS (MySQL)]
+        
+        subgraph "Inside EC2"
+            H[ecommerce.jar]
+        end
+
+        F -- DB Connection --> G;
+    end
+    
+    E -- SSH --> F;
+
+    subgraph "User Service Flow"
+        I[👤 User] -- API Request --> F;
+    end
+
+    style F fill:#FF9900,stroke:#333,stroke-width:2px
+    style G fill:#0073BB,stroke:#333,stroke-width:2px
 ```
 
 </details>
