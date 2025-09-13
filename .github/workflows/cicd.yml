@@ -44,7 +44,7 @@ jobs:
           username: ${{ secrets.AWS_USERNAME }}
           key: ${{ secrets.AWS_SSH_KEY }}
           source: "ECommerce-0.0.1-SNAPSHOT.jar"
-          target: "/home/${{ secrets.AWS_USERNAME }}/app"
+          target: "/home/${{ secrets.AWS_USERNAME }}/ecommerce"
 
       - name: Restart server with systemd
         uses: appleboy/ssh-action@master
@@ -55,4 +55,6 @@ jobs:
           script: |
             cd /home/${{ secrets.AWS_USERNAME }}/ecommerce
             mv -f ECommerce-0.0.1-SNAPSHOT.jar ecommerce.jar
+            sudo chown ${{ secrets.AWS_USERNAME }}:${{ secrets.AWS_USERNAME }} ecommerce.jar
+            sudo chmod +x ecommerce.jar
             sudo systemctl restart ecommerce.service
