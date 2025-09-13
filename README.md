@@ -38,7 +38,7 @@
 ```mermaid
 graph TD
 
-    subgraph CI_CD
+    subgraph CI,CD
         A[개발자] -->|1. Git Push| B[GitHub 저장소]
         B -->|2. 트리거| C{GitHub Actions}
 
