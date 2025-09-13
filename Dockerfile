@@ -7,7 +7,7 @@ COPY gradle /home/gradle/src/gradle
 COPY src /home/gradle/src/src
 
 RUN chmod +x ./gradlew
-RUN ./gradlew build -x test
+RUN ./gradlew build -x test --stacktrace
 
 FROM eclipse-temurin:21-jre-alpine
 
