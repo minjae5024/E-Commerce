@@ -37,33 +37,34 @@
 
 ```mermaid
 graph TD
+    %% Node Definitions
     subgraph "Development & CI/CD"
         A[👨‍💻 Developer]
         B(GitHub Repository)
         C{GitHub Actions}
         D[✅ .jar 생성]
-        E[🚀 EC2로 전송 및 재시작]
-
-        A -- 1. Git Push --> B
-        B -- 2. Trigger --> C
-        C -- 3. Build --> D
-        D -- 4. Deploy --> E
+        E[🚀 Deploy Script]
     end
 
     subgraph "AWS Cloud Infrastructure"
         F["🌐 EC2 Instance<br>(ecommerce.jar)"]
         G[💾 RDS (MySQL)]
-
-        F -- DB Connection --> G
     end
     
     subgraph "User Service Flow"
         I[👤 User]
-        I -- API Request --> F
     end
 
+    %% Link Definitions
+    A -- 1. Git Push --> B
+    B -- 2. Trigger --> C
+    C -- 3. Build --> D
+    D -- 4. Deploy --> E
     E -- SSH --> F
+    F -- DB Connection --> G
+    I -- API Request --> F
 
+    %% Style Definitions
     style F fill:#FF9900,stroke:#333,stroke-width:2px
     style G fill:#0073BB,stroke:#333,stroke-width:2px
 ```
