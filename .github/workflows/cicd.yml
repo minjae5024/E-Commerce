@@ -63,7 +63,8 @@ jobs:
             
             docker pull $IMAGE_TAG
             
-            if [ $(docker ps -q -f name=${{ env.IMAGE_NAME }}) ]; then
+            # Stop and remove the old container if it exists (running or stopped)
+            if [ $(docker ps -a -q -f name=${{ env.IMAGE_NAME }}) ]; then
               docker stop ${{ env.IMAGE_NAME }}
               docker rm ${{ env.IMAGE_NAME }}
             fi
