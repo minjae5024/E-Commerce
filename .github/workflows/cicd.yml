@@ -59,7 +59,7 @@ jobs:
             PID=$(pgrep -f "ecommerce.jar")
             if [ -n "$PID" ]; then
               echo "Stopping process with PID: $PID"
-              kill -15 $PID
+              kill -15 $PID || true
               sleep 5
             fi
             
