@@ -47,14 +47,7 @@ graph TD
     end
 
     subgraph "AWS Cloud Infrastructure"
-        F[🌐 EC2 Instance]
-        G[💾 RDS (MySQL)]
-        
-        subgraph "Inside EC2"
-            H[ecommerce.jar]
-        end
-
-        F -- DB Connection --> G;
+        F["🌐 EC2 Instance<br>(ecommerce.jar)"] -- DB Connection --> G[💾 RDS (MySQL)];
     end
     
     E -- SSH --> F;
