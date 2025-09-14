@@ -21,14 +21,59 @@
 - **🛒 장바구니**: 로그인한 사용자가 원하는 상품을 담고, 수량을 변경하고, 삭제하는 등의 장바구니 기능을 제공합니다.
 - **💳 주문 및 결제**: 장바구니의 상품들을 기반으로 주문을 생성하고, 사용자의 내부 포인트를 이용한 결제 시뮬레이션 기능을 구현했습니다.
 
-## 3. 적용 기술 및 개발 환경
+## 3. API 명세
+
+### **User API**
+
+| 기능 | HTTP Method | URL | 설명 |
+| :--- | :--- | :--- | :--- |
+| 회원가입 | `POST` | `/api/users/signup` | 새로운 사용자 등록 |
+| 로그인 | `POST` | `/api/users/login` | 이메일, 비밀번호로 로그인 후 JWT 발급 |
+
+### **Product API**
+
+| 기능 | HTTP Method | URL | 설명 |
+| :--- | :--- | :--- | :--- |
+| 상품 생성 | `POST` | `/api/products` | 새로운 상품 등록 (ADMIN 권한 필요) |
+| 상품 상세 조회 | `GET` | `/api/products/{productId}` | 특정 상품의 상세 정보 조회 |
+| 상품 목록 조회 | `GET` | `/api/products` | 모든 상품 목록 페이징 조회 |
+| 상품 정보 수정 | `PUT` | `/api/products/{productId}` | 특정 상품의 정보 수정 (ADMIN 권한 필요) |
+| 상품 삭제 | `DELETE` | `/api/products/{productId}` | 특정 상품 삭제 (ADMIN 권한 필요) |
+
+### **Cart API**
+
+| 기능 | HTTP Method | URL | 설명 |
+| :--- | :--- | :--- | :--- |
+| 장바구니 상품 추가 | `POST` | `/api/cart/items` | 내 장바구니에 상품 추가 |
+| 내 장바구니 조회 | `GET` | `/api/cart` | 내 장바구니의 모든 상품 조회 |
+| 장바구니 상품 수량 변경 | `PATCH` | `/api/cart/items/{cartItemId}` | 장바구니 내 특정 상품의 수량 변경 |
+| 장바구니 상품 삭제 | `DELETE` | `/api/cart/items/{cartItemId}` | 장바구니에서 특정 상품 제거 |
+
+### **Order API**
+
+| 기능 | HTTP Method | URL | 설명 |
+| :--- | :--- | :--- | :--- |
+| 주문 생성 | `POST` | `/api/orders` | 장바구니의 모든 상품으로 새로운 주문 생성 |
+| 내 주문 목록 조회 | `GET` | `/api/orders` | 내 모든 주문 내역 페이징 조회 |
+| 주문 상세 조회 | `GET` | `/api/orders/{orderId}` | 내 특정 주문의 상세 내역 조회 |
+| 주문 취소 | `POST` | `/api/orders/{orderId}/cancel` | 내 특정 주문 취소 |
+
+### **Payment API**
+
+| 기능 | HTTP Method | URL | 설명 |
+| :--- | :--- | :--- | :--- |
+| 내부 포인트 결제 | `POST` | `/api/payments/internal/{orderId}` | 내부 포인트를 사용한 주문 결제 처리 |
+
+<br>
+
+## 4. 적용 기술 및 개발 환경
 
 - **Backend**: `Java 21`, `Spring Boot 3.x`, `Spring Security`, `Spring Data JPA`
 - **Database**: `MySQL`
 - **Build Tool**: `Gradle`
 - **Infrastructure & DevOps**: `GitHub Actions`, `AWS EC2`, `AWS RDS`
 
-## 4. 전체 시스템 아키텍처
+## 5. 전체 시스템 아키텍처
 
 <details>
 <summary><b>클릭하여 아키텍처 확인하기</b></summary>
@@ -64,7 +109,7 @@ graph TD
 
 </details>
 
-## 5. 문제 해결 및 개선 경험
+## 6. 문제 해결 및 개선 경험
 
 이 프로젝트를 진행하며 마주했던 주요 기술적 문제들과, 이를 해결하며 **'왜'** 라는 질문을 던지고 더 나은 방향을 고민했던 경험입니다.
 
