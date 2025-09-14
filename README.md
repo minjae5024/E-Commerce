@@ -23,7 +23,7 @@
 - 
 ## 3. 적용 기술 및 개발 환경
 
-- **Backend**: `Java 21`, `Spring Boot 3.x`, `Spring Security`, `Spring Data JPA`
+- **Backend**: `Java`, `Spring Boot`, `Spring Security`, `Spring Data JPA`
 - **Database**: `MySQL`
 - **Build Tool**: `Gradle`
 - **Infrastructure & DevOps**: `GitHub Actions`, `AWS EC2`, `AWS RDS`
