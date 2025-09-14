@@ -85,7 +85,7 @@
 
 - **테스트 방법**:
   1.  `/api/users/login` API를 통해 로그인하고 `accessToken`을 발급받습니다.
-  2.  인증이 필요한 API는 HTTP 요청 헤더에 `Authorization: Bearer {accessToken}`을 포함하여 호출합니다.
+  2.  인증이 필요한 API는 HTTP 요청 헤더에 `Authorization: Bearer {accessToken}`을 포함하여 호출합니다. (Swagger 사용 시 초록색 **Authorize** 버튼을 눌러 Value에 Bearer + " " + <accessToken> 입력)
  
 ## 6. 전체 시스템 아키텍처
 
