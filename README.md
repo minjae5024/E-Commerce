@@ -25,7 +25,6 @@
 
 - **Backend**: `Java`, `Spring Boot`, `Spring Security`, `Spring Data JPA`
 - **Database**: `MySQL`
-- **Build Tool**: `Gradle`
 - **Infrastructure & DevOps**: `GitHub Actions`, `AWS EC2`, `AWS RDS`
 
 ## 4. API 명세
