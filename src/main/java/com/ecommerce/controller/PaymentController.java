@@ -14,7 +14,6 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/api/payments")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('USER')")
 public class PaymentController {
 
     private final PaymentService paymentService;

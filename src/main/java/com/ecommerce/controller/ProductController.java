@@ -21,7 +21,6 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Long> createProduct(@Valid @RequestBody ProductCreateRequestDto requestDto) {
         Long productId = productService.createProduct(requestDto);
         return ResponseEntity.created(URI.create("/api/products/" + productId)).body(productId);
@@ -40,14 +39,12 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Long> updateProduct(@PathVariable Long productId, @Valid @RequestBody com.ecommerce.dto.ProductUpdateRequestDto requestDto) {
         Long updatedProductId = productService.updateProduct(productId, requestDto);
         return ResponseEntity.ok(updatedProductId);
     }
 
     @DeleteMapping("/{productId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
         productService.deleteProduct(productId);
         return ResponseEntity.noContent().build();

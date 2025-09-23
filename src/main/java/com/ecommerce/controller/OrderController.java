@@ -16,7 +16,6 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/api/orders")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('USER')")
 public class OrderController {
 
     private final OrderService orderService;
