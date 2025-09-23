@@ -2,6 +2,7 @@ package com.ecommerce.controller;
 
 import com.ecommerce.dto.ProductCreateRequestDto;
 import com.ecommerce.dto.ProductResponseDto;
+import com.ecommerce.dto.ProductUpdateRequestDto;
 import com.ecommerce.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity<Long> updateProduct(@PathVariable Long productId, @Valid @RequestBody com.ecommerce.dto.ProductUpdateRequestDto requestDto) {
+    public ResponseEntity<Long> updateProduct(@PathVariable Long productId, @Valid @RequestBody ProductUpdateRequestDto requestDto) {
         Long updatedProductId = productService.updateProduct(productId, requestDto);
         return ResponseEntity.ok(updatedProductId);
     }

@@ -1,6 +1,5 @@
 package com.ecommerce.service;
 
-import com.ecommerce.config.UserDetailsImpl;
 import com.ecommerce.domain.User;
 import com.ecommerce.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

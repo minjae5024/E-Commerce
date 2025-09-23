@@ -1,4 +1,4 @@
-package com.ecommerce.config;
+package com.ecommerce.service;
 
 import com.ecommerce.domain.User;
 import org.springframework.security.core.GrantedAuthority;
