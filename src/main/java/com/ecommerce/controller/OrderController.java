@@ -4,6 +4,7 @@ import com.ecommerce.dto.OrderDetailResponseDto;
 import com.ecommerce.dto.OrderResponseDto;
 import com.ecommerce.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<OrderResponseDto>> getUserOrders(Principal principal, Pageable pageable) {
+    public ResponseEntity<Page<OrderResponseDto>> getUserOrders(Principal principal, @ParameterObject Pageable pageable) {
         Page<OrderResponseDto> orders = orderService.findUserOrders(principal.getName(), pageable);
         return ResponseEntity.ok(orders);
     }
