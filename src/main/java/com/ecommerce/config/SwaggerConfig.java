@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @OpenAPIDefinition(
         info = @Info(title = "E-commerce API 명세서",
                 description = "이커머스 API 명세서",
-                version = "v1"))
+                version = "1.0"))
 @Configuration
 public class SwaggerConfig {
 

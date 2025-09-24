@@ -26,7 +26,7 @@ public class OrderItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    private int orderPrice; // Snapshot of price at time of order
+    private int orderPrice;
     private int quantity;
 
     public static OrderItem createOrderItem(Product product, int quantity) {

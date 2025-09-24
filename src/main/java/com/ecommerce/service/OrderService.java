@@ -5,6 +5,7 @@ import com.ecommerce.dto.OrderDetailResponseDto;
 import com.ecommerce.dto.OrderResponseDto;
 import com.ecommerce.repository.CartRepository;
 import com.ecommerce.repository.OrderRepository;
+import com.ecommerce.repository.ProductRepository;
 import com.ecommerce.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
+    private final ProductRepository productRepository; 
 
     @Transactional
     public Long createOrderFromCart(String userEmail) {
@@ -37,18 +39,24 @@ public class OrderService {
             throw new IllegalStateException("Cart is empty");
         }
 
-        // Create OrderItems from CartItems
+        
         List<OrderItem> orderItems = cart.getCartItems().stream()
-                .map(cartItem -> OrderItem.createOrderItem(cartItem.getProduct(), cartItem.getQuantity()))
+                .map(cartItem -> {
+                    
+                    Product product = productRepository.findWithLockById(cartItem.getProduct().getId())
+                            .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+                    
+                    return OrderItem.createOrderItem(product, cartItem.getQuantity());
+                })
                 .collect(Collectors.toList());
 
-        // Create Order
+        
         Order order = Order.createOrder(user, orderItems);
 
-        // Save Order
+        
         orderRepository.save(order);
 
-        // Clear Cart
+        
         cart.clearItems();
 
         return order.getId();
