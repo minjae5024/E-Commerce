@@ -37,6 +37,9 @@ class OrderServiceTest {
     @Mock
     private CartRepository cartRepository;
 
+    @Mock
+    private com.ecommerce.repository.ProductRepository productRepository;
+
     @Test
     @DisplayName("주문 생성 성공")
     void createOrder_success() {
@@ -46,12 +49,14 @@ class OrderServiceTest {
         ReflectionTestUtils.setField(user, "id", 1L);
 
         Product product = Product.builder().name("testProduct").price(10000).stockQuantity(100).build();
+        ReflectionTestUtils.setField(product, "id", 1L);
         Cart cart = Cart.createCart(user);
         CartItem cartItem = CartItem.createCartItem(cart, product, 2);
         ReflectionTestUtils.setField(cart, "cartItems", new java.util.ArrayList<>(java.util.List.of(cartItem)));
 
         given(userRepository.findByEmail(userEmail)).willReturn(Optional.of(user));
         given(cartRepository.findByUserId(user.getId())).willReturn(Optional.of(cart));
+        given(productRepository.findWithLockById(any(Long.class))).willReturn(Optional.of(product));
 
         // when
         orderService.createOrderFromCart(userEmail);

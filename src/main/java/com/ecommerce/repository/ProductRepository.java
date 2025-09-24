@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 
 import jakarta.persistence.LockModeType;
-import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
