@@ -103,6 +103,6 @@ class PaymentServiceTest {
         // when & then
         assertThatThrownBy(() -> paymentService.processInternalPayment(userEmail, orderId))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("결제 가능한 상태가 아닙니다.");
+                .hasMessage("결제 가능한 상태의 주문이 아닙니다.");
     }
 }
