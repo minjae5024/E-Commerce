@@ -9,10 +9,10 @@ import lombok.Setter;
 @Setter
 public class UserLoginRequestDto {
 
-    @NotEmpty(message = "Email is required")
-    @Email(message = "Invalid email format")
+    @NotEmpty(message = "이메일은 필수 항목입니다.")
+    @Email(message = "유효한 이메일 형식이 아닙니다.")
     private String email;
 
-    @NotEmpty(message = "Password is required")
+    @NotEmpty(message = "비밀번호는 필수 항목입니다.")
     private String password;
 }

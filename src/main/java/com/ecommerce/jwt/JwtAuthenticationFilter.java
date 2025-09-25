@@ -1,4 +1,4 @@
-package com.ecommerce.config.jwt;
+package com.ecommerce.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

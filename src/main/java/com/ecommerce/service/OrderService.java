@@ -39,7 +39,6 @@ public class OrderService {
             throw new IllegalStateException("Cart is empty");
         }
 
-        
         List<OrderItem> orderItems = cart.getCartItems().stream()
                 .map(cartItem -> {
                     
@@ -50,13 +49,8 @@ public class OrderService {
                 })
                 .collect(Collectors.toList());
 
-        
         Order order = Order.createOrder(user, orderItems);
-
-        
         orderRepository.save(order);
-
-        
         cart.clearItems();
 
         return order.getId();

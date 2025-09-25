@@ -1,7 +1,7 @@
 package com.ecommerce.config;
 
-import com.ecommerce.config.jwt.JwtAuthenticationFilter;
-import com.ecommerce.config.jwt.JwtTokenProvider;
+import com.ecommerce.jwt.JwtAuthenticationFilter;
+import com.ecommerce.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

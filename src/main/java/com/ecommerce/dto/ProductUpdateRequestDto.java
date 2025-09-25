@@ -10,17 +10,17 @@ import lombok.Setter;
 @Setter
 public class ProductUpdateRequestDto {
 
-    @NotBlank(message = "Product name is required.")
+    @NotBlank(message = "상품명은 필수 항목입니다.")
     private String name;
 
-    @NotNull(message = "Price is required.")
-    @Min(value = 0, message = "Price must be non-negative.")
+    @NotNull(message = "가격은 필수 항목입니다.")
+    @Min(value = 0, message = "가격은 0 이상이어야 합니다.")
     private Integer price;
 
-    @NotNull(message = "Stock quantity is required.")
-    @Min(value = 0, message = "Stock quantity must be non-negative.")
+    @NotNull(message = "재고 수량은 필수 항목입니다.")
+    @Min(value = 0, message = "재고 수량은 0 이상이어야 합니다.")
     private Integer stockQuantity;
 
-    @NotBlank(message = "Description is required.")
+    @NotBlank(message = "상품 설명은 필수 항목입니다.")
     private String description;
 }

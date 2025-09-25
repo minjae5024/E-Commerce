@@ -1,6 +1,6 @@
 package com.ecommerce.controller;
 
-import com.ecommerce.config.jwt.JwtTokenProvider;
+import com.ecommerce.jwt.JwtTokenProvider;
 import com.ecommerce.dto.JwtResponseDto;
 import com.ecommerce.dto.UserLoginRequestDto;
 import com.ecommerce.dto.UserSignupRequestDto;
