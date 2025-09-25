@@ -25,10 +25,10 @@ public class CartService {
     @Transactional
     public Long addItemToCart(String userEmail, CartItemRequestDto requestDto) {
         User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new EntityNotFoundException("User not found: " + userEmail));
+                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다: " + userEmail));
 
         Product product = productRepository.findById(requestDto.getProductId())
-                .orElseThrow(() -> new EntityNotFoundException("Product not found: " + requestDto.getProductId()));
+                .orElseThrow(() -> new EntityNotFoundException("상품을 찾을 수 없습니다: " + requestDto.getProductId()));
 
         Cart cart = cartRepository.findByUserId(user.getId())
                 .orElseGet(() -> {
@@ -51,7 +51,7 @@ public class CartService {
 
     public CartResponseDto getCartForUser(String userEmail) {
         User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new EntityNotFoundException("User not found: " + userEmail));
+                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다: " + userEmail));
 
         Cart cart = cartRepository.findByUserId(user.getId())
                 .orElseGet(() -> {
@@ -76,13 +76,13 @@ public class CartService {
 
     private CartItem findCartItemForUser(String userEmail, Long cartItemId) {
         User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new EntityNotFoundException("User not found: " + userEmail));
+                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다: " + userEmail));
 
         CartItem cartItem = cartItemRepository.findById(cartItemId)
-                .orElseThrow(() -> new EntityNotFoundException("CartItem not found: " + cartItemId));
+                .orElseThrow(() -> new EntityNotFoundException("장바구니 상품을 찾을 수 없습니다: " + cartItemId));
 
         if (!cartItem.getCart().getUser().getId().equals(user.getId())) {
-            throw new SecurityException("User does not have permission to modify this cart item.");
+            throw new SecurityException("조회할 권한이 없습니다.");
         }
         return cartItem;
     }

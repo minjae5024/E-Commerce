@@ -81,7 +81,7 @@ class OrderServiceTest {
         // when & then
         assertThatThrownBy(() -> orderService.createOrderFromCart(userEmail))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("Cart is empty");
+                .hasMessage("장바구니가 비어있습니다");
     }
 
     @Test

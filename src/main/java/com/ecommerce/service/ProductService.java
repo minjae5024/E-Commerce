@@ -27,7 +27,7 @@ public class ProductService {
 
     public ProductResponseDto findProductById(Long productId) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
+                .orElseThrow(() -> new EntityNotFoundException("상품을 찾을 수 없습니다."));
         return new ProductResponseDto(product);
     }
 
@@ -39,7 +39,7 @@ public class ProductService {
     @Transactional
     public Long updateProduct(Long productId, com.ecommerce.dto.ProductUpdateRequestDto requestDto) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
+                .orElseThrow(() -> new EntityNotFoundException("상품을 찾을 수 없습니다."));
         product.update(requestDto.getName(), requestDto.getPrice(), requestDto.getStockQuantity(), requestDto.getDescription());
         return productId;
     }

@@ -20,16 +20,16 @@ public class PaymentService {
 
     public Long processInternalPayment(String userEmail, Long orderId) {
         User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new EntityNotFoundException("User not found: " + userEmail));
+                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다: " + userEmail));
 
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new EntityNotFoundException("Order not found: " + orderId));
+                .orElseThrow(() -> new EntityNotFoundException("주문을 찾을 수 없습니다: " + orderId));
 
         if (!order.getUser().getId().equals(user.getId())) {
-            throw new SecurityException("User does not have permission to pay for this order.");
+            throw new SecurityException("이 주문을 결제할 권한이 없습니다.");
         }
         if (order.getStatus() != OrderStatus.PENDING_PAYMENT) {
-            throw new IllegalStateException("Order is not in a state to be paid.");
+            throw new IllegalStateException("결제 가능한 상태의 주문이 아닙니다.");
         }
 
         int totalPrice = order.getTotalPrice();

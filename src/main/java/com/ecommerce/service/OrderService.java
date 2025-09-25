@@ -30,20 +30,20 @@ public class OrderService {
     @Transactional
     public Long createOrderFromCart(String userEmail) {
         User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new EntityNotFoundException("User not found: " + userEmail));
+                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다: " + userEmail));
 
         Cart cart = cartRepository.findByUserId(user.getId())
-                .orElseThrow(() -> new IllegalStateException("Cart not found for user"));
+                .orElseThrow(() -> new IllegalStateException("장바구니를 찾을 수 없습니다"));
 
         if (cart.getCartItems().isEmpty()) {
-            throw new IllegalStateException("Cart is empty");
+            throw new IllegalStateException("장바구니가 비어있습니다");
         }
 
         List<OrderItem> orderItems = cart.getCartItems().stream()
                 .map(cartItem -> {
                     
                     Product product = productRepository.findWithLockById(cartItem.getProduct().getId())
-                            .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+                            .orElseThrow(() -> new EntityNotFoundException("상품을 찾을 수 없습니다"));
                     
                     return OrderItem.createOrderItem(product, cartItem.getQuantity());
                 })
@@ -58,17 +58,17 @@ public class OrderService {
 
     public Page<OrderResponseDto> findUserOrders(String userEmail, Pageable pageable) {
         User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new EntityNotFoundException("User not found: " + userEmail));
+                .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다: " + userEmail));
         Page<Order> orders = orderRepository.findByUser(user, pageable);
         return orders.map(OrderResponseDto::new);
     }
 
     public OrderDetailResponseDto findOrderDetails(String userEmail, Long orderId) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new EntityNotFoundException("Order not found: " + orderId));
+                .orElseThrow(() -> new EntityNotFoundException("주문을 찾을 수 없습니다: " + orderId));
 
         if (!order.getUser().getEmail().equals(userEmail)) {
-            throw new SecurityException("User does not have permission to view this order");
+            throw new SecurityException("조회할 권한이 없습니다");
         }
 
         return new OrderDetailResponseDto(order);
@@ -77,14 +77,10 @@ public class OrderService {
     @Transactional
     public void cancelOrder(String userEmail, Long orderId) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new EntityNotFoundException("Order not found: " + orderId));
+                .orElseThrow(() -> new EntityNotFoundException("주문을 찾을 수 없습니다: " + orderId));
 
         if (!order.getUser().getEmail().equals(userEmail)) {
-            throw new SecurityException("User does not have permission to cancel this order");
-        }
-
-        if (order.getStatus() != OrderStatus.ORDERED) {
-            throw new IllegalStateException("Order cannot be canceled if it's not in ORDERED state.");
+            throw new SecurityException("취소할 권한이 없습니다");
         }
 
         order.cancel();

@@ -81,7 +81,7 @@ class PaymentServiceTest {
         // when & then
         assertThatThrownBy(() -> paymentService.processInternalPayment(userEmail, orderId))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("Not enough points");
+                .hasMessage("포인트가 부족합니다.");
     }
 
     @Test
@@ -103,6 +103,6 @@ class PaymentServiceTest {
         // when & then
         assertThatThrownBy(() -> paymentService.processInternalPayment(userEmail, orderId))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("Order is not in a state to be paid.");
+                .hasMessage("결제 가능한 상태가 아닙니다.");
     }
 }

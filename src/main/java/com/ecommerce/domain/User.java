@@ -47,7 +47,7 @@ public class User extends BaseTimeEntity {
 
     public void usePoints(int amount) {
         if (this.points < amount) {
-            throw new IllegalStateException("Not enough points");
+            throw new IllegalStateException("포인트가 부족합니다.");
         }
         this.points -= amount;
     }
