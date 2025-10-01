@@ -8,9 +8,9 @@
 
 ---
 
-###  **API Docs**
+###  **API 문서**
 
-- **[API Documentation (Swagger)](http://3.34.46.39:8081/swagger-ui/index.html)**
+- **[API 문서 (Swagger)](http://3.34.46.39:8081/swagger-ui/index.html)**
 
 ---
 
