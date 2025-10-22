@@ -6,7 +6,6 @@ import com.ecommerce.service.CartService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -21,13 +20,13 @@ public class CartController {
 
     @PostMapping("/items")
     public ResponseEntity<Long> addItemToCart(@Valid @RequestBody CartItemRequestDto requestDto, Principal principal) {
-        Long cartItemId = cartService.addItemToCart(principal.getName(), requestDto);
+        Long cartItemId = cartService.addItem(principal.getName(), requestDto);
         return ResponseEntity.ok(cartItemId);
     }
 
     @GetMapping
     public ResponseEntity<CartResponseDto> getCart(Principal principal) {
-        CartResponseDto cart = cartService.getCartForUser(principal.getName());
+        CartResponseDto cart = cartService.getCart(principal.getName());
         return ResponseEntity.ok(cart);
     }
 

@@ -8,7 +8,6 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -23,7 +22,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<Long> createOrder(Principal principal) {
-        Long orderId = orderService.createOrderFromCart(principal.getName());
+        Long orderId = orderService.createOrder(principal.getName());
         return ResponseEntity.created(URI.create("/api/orders/" + orderId)).body(orderId);
     }
 

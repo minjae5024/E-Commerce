@@ -28,7 +28,7 @@ public class OrderService {
     private final ProductRepository productRepository; 
 
     @Transactional
-    public Long createOrderFromCart(String userEmail) {
+    public Long createOrder(String userEmail) {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다: " + userEmail));
 

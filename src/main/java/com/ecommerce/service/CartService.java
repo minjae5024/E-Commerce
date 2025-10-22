@@ -23,7 +23,7 @@ public class CartService {
     private final ProductRepository productRepository;
 
     @Transactional
-    public Long addItemToCart(String userEmail, CartItemRequestDto requestDto) {
+    public Long addItem(String userEmail, CartItemRequestDto requestDto) {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다: " + userEmail));
 
@@ -49,7 +49,7 @@ public class CartService {
         return cartItem.getId();
     }
 
-    public CartResponseDto getCartForUser(String userEmail) {
+    public CartResponseDto getCart(String userEmail) {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다: " + userEmail));
 
@@ -64,17 +64,17 @@ public class CartService {
 
     @Transactional
     public void updateCartItemQuantity(String userEmail, Long cartItemId, int quantity) {
-        CartItem cartItem = findCartItemForUser(userEmail, cartItemId);
+        CartItem cartItem = findCartItem(userEmail, cartItemId);
         cartItem.updateQuantity(quantity);
     }
 
     @Transactional
     public void removeCartItem(String userEmail, Long cartItemId) {
-        CartItem cartItem = findCartItemForUser(userEmail, cartItemId);
+        CartItem cartItem = findCartItem(userEmail, cartItemId);
         cartItemRepository.delete(cartItem);
     }
 
-    private CartItem findCartItemForUser(String userEmail, Long cartItemId) {
+    private CartItem findCartItem(String userEmail, Long cartItemId) {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다: " + userEmail));
 

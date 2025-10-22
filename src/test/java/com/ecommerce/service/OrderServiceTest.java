@@ -59,7 +59,7 @@ class OrderServiceTest {
         given(productRepository.findWithLockById(any(Long.class))).willReturn(Optional.of(product));
 
         // when
-        orderService.createOrderFromCart(userEmail);
+        orderService.createOrder(userEmail);
 
         // then
         verify(orderRepository).save(any(Order.class));
@@ -79,7 +79,7 @@ class OrderServiceTest {
         given(cartRepository.findByUserId(user.getId())).willReturn(Optional.of(cart));
 
         // when & then
-        assertThatThrownBy(() -> orderService.createOrderFromCart(userEmail))
+        assertThatThrownBy(() -> orderService.createOrder(userEmail))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("장바구니가 비어있습니다");
     }
