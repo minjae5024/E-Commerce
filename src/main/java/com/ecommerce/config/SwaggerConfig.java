@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
-        info = @Info(title = "E-commerce API 명세서",
+        info = @Info(title = "이커머스 API 명세서",
                 description = "이커머스 API 명세서",
                 version = "1.0"))
 @Configuration

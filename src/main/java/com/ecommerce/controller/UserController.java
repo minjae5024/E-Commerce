@@ -16,13 +16,18 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Tag(name = "사용자 API")
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -32,6 +37,15 @@ public class UserController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
 
+    @Operation(
+            summary = "로그인",
+            requestBody = @RequestBody(
+                    required = true, content = @Content(
+                            mediaType = "application/json",
+                            examples = @ExampleObject(value = "{\"email\": \"admin@admin.com\", \"password\": \"admin\"}")
+                    )
+            )
+    )
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody UserLoginRequestDto loginRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -59,6 +73,15 @@ public class UserController {
         }
     }
 
+    @Operation(
+            summary = "사용자 회원가입",
+            requestBody = @RequestBody(
+                    required = true, content = @Content(
+                            mediaType = "application/json",
+                            examples = @ExampleObject(value = "{\"email\": \"1q2w3e4r@example.com\", \"password\": \"1q2w3e4r\", \"username\": \"1q2w3e4r\"}")
+                    )
+            )
+    )
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody UserSignupRequestDto userSignupRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
